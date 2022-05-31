@@ -64,13 +64,6 @@ export PATH="/usr/local/opt/openssl@1.1/bin:$PATH"
 
 #export PATH="/Users/matac/b3_later/compiler/rust-build/bin:$PATH"
 
-#gnuplotの設定
-#export GNUTERM=aqua
-#set terminal x11
-#set terminal dumb
-#set terminal jpeg
-#set output "out.png"
-
 # ghq管理のリポジトリパスをpecoに渡す．
 function peco-src () {
   local selected_dir=$(ghq list -p | peco --query "$LBUFFER")
@@ -94,12 +87,6 @@ zle -N peco-history-selection
 bindkey '^R' peco-history-selection
 
 export fireflyhg="ssh://firefly/hg"
-
-# Golang
-export PATH=$PATH:/usr/local/go/bin
-export GOPATH=$HOME/ws/go
-export PATH=$PATH:$GOPATH/bin
-export PATH=$PATH:$GOPATH/bin/darwin_arm64
 
 # CbC
 # export CBC_COMPILER=/Users/matac/ws/cr/CbC/CbC_gcc/build/bin/gcc
@@ -126,33 +113,8 @@ md () {
     cd $1
 }
 
-# uninstall command
-uninstall () {
-  spt play --uri spotify:track:0UaQPu8dlcZfzg9g7DUSkD
-  sleep 68
-  rm "$@"
-}
-
-# ucd command
-ucd () {
-  spt play --uri spotify:track:3YbioJ807KAVVzY3NFdpF5
-  sleep 40
-  cd "$@"
-}
-
-# chAngE command
-chAngE () {
-  spt play --uri spotify:track:7McCOOQG8GQtngK2Obh0Ts
-  sleep 60
-  cd "$@"
-}
 export PATH="$HOME/.plenv/bin:$PATH"
 eval "$(plenv init -)"
 
 # Fig post block. Keep at the bottom of this file.
 . "$HOME/.fig/shell/zshrc.post.zsh"
-
-if [[ $TERM_PROGRAM == "vscode" ]] && [[ $(arch) == "arm64" ]];
-then
-  exec arch -x86_64 $SHELL
-fi

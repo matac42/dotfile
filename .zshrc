@@ -1,6 +1,4 @@
-# Fig pre block. Keep at the top of this file.
-. "$HOME/.fig/shell/zshrc.pre.zsh"
-#色を使えるようにする
+# set color
 autoload colors
 colors
 
@@ -16,34 +14,20 @@ precmd () { vcs_info }
 precmd_vcs_info() { vcs_info }
 precmd_functions+=( precmd_vcs_info )
 
-#カレントディレクトリの表示
-#PROMPT="%{$fg[green]%}[${HOST%%.*} %1~]%(!.#.$)%{$reset_color%}"
+# show current dir
 PROMPT="%{$fg[green]%}[%~]%{$reset_color%}\$vcs_info_msg_0_
 %(!.#.$)"
 
-#エイリアス
+# alias
 alias ls="ls -GF"
 alias la="ls -la"
 alias cp="cp -i"
 alias mv="mv -i"
 alias rm="rm -i"
 alias c="code ."
-alias note="code ~/ws/notes"
 alias crslide="slideshow build -t s6cr slide.md && open slide.html"
-alias chrome="/Applications/Google\ Chrome.app/Contents/MacOS/Google\ Chrome"
-alias blog="perl /Users/matac/ws/bin/blog_post.pl"
-alias mac="ifconfig en0 | awk '/ether/{print $2}'"
 
-#前回最後に開いたディレクトリに自動移動
-setopt NONOMATCH
-autoload -Uz add-zsh-hook
-add-zsh-hook chpwd chpwd_func
-function chpwd_func() {
-  sed -i -e "s:^cd .* #catcat:cd $PWD #catcat:g" ~/.zshrc
-}
-cd /Users/matac/ws/src/github.com/matac42/dotfile #catcat
-
-#zshの補完機能を有効化
+#zsh auto complete
 autoload -Uz compinit
 compinit
 
@@ -56,15 +40,10 @@ SAVEHIST=1000000
 setopt inc_append_history
 setopt share_history
 
-#接続しているwifiのssidを表示
-# /System/Library/PrivateFrameworks/Apple80211.framework/Versions/A/Resources/airport -I | grep "\sSSID" | tr -d ' '
-
-#LibreSSLではなくOpenSSLを使用する．
+# useOpenSSL
 export PATH="/usr/local/opt/openssl@1.1/bin:$PATH"
 
-#export PATH="/Users/matac/b3_later/compiler/rust-build/bin:$PATH"
-
-# ghq管理のリポジトリパスをpecoに渡す．
+# ghq with peco
 function peco-src () {
   local selected_dir=$(ghq list -p | peco --query "$LBUFFER")
   if [ -n "$selected_dir" ]; then
@@ -76,7 +55,7 @@ function peco-src () {
 zle -N peco-src
 bindkey '^]' peco-src
 
-# pecoによるhistory検索の設定
+# history with peco
 function peco-history-selection() {
     BUFFER=`history -n 1 | tail -r  | awk '!a[$0]++' | peco`
     CURSOR=$#BUFFER
@@ -91,30 +70,3 @@ export fireflyhg="ssh://firefly/hg"
 # CbC
 # export CBC_COMPILER=/Users/matac/ws/cr/CbC/CbC_gcc/build/bin/gcc
 export CBC_COMPILER=/opt/homebrew/Cellar/cbclang/llvm10/bin/clang
-
-export NVM_DIR="$HOME/.nvm"
-  [ -s "/usr/local/opt/nvm/nvm.sh" ] && . "/usr/local/opt/nvm/nvm.sh"  # This loads nvm
-  [ -s "/usr/local/opt/nvm/etc/bash_completion.d/nvm" ] && . "/usr/local/opt/nvm/etc/bash_completion.d/nvm"  # This loads nvm bash_completion
-source $(brew --prefix nvm)/nvm.sh
-
-# rbenv
-[[ -d ~/.rbenv  ]] && \
-  export PATH=${HOME}/.rbenv/bin:${PATH} && \
-  eval "$(rbenv init -)"
-
-# pyenv
-export PYENV_ROOT="$HOME/.pyenv/shims"
-export PATH="$PYENV_ROOT:$PATH"
-export PIPENV_PYTHON="$PYENV_ROOT/python"
-
-# mkdir & cd
-md () {
-    mkdir $1
-    cd $1
-}
-
-export PATH="$HOME/.plenv/bin:$PATH"
-eval "$(plenv init -)"
-
-# Fig post block. Keep at the bottom of this file.
-. "$HOME/.fig/shell/zshrc.post.zsh"
